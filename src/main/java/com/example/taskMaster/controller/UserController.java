@@ -34,7 +34,7 @@ public class UserController {
         if (!userDtoList.isEmpty()) {
             return new ResponseEntity<>(userDtoList, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("No users found in database", HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("No users found in database!", HttpStatus.OK);
         }
     }
 

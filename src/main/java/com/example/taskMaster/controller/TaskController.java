@@ -31,7 +31,7 @@ public class TaskController {
         if (!taskDtoList.isEmpty()) {
             return new ResponseEntity<>(taskDtoList, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("No Tasks created", HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("No tasks created!", HttpStatus.OK);
         }
     }
 }

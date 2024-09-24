@@ -6,6 +6,7 @@ import com.example.taskMaster.exception.UserAlreadyExistsException;
 import com.example.taskMaster.repository.UserRepository;
 import com.example.taskMaster.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +16,14 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     private final ObjectMapper mapper;
 
     public UserServiceImpl(UserRepository userRepository, ObjectMapper mapper) {
         this.userRepository = userRepository;
         this.mapper = mapper;
+        this.bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
     }
 
     @Override
@@ -46,7 +50,9 @@ public class UserServiceImpl implements UserService {
     }
 
     private User mapToEntity(UserDto userDto) {
-        return mapper.convertValue(userDto, User.class);
+        User user = mapper.convertValue(userDto, User.class);
+        user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+        return user;
     }
 
     private UserDto mapToDto(User user) {
