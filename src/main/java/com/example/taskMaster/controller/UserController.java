@@ -19,19 +19,19 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody UserDto userDto){
-        try{
+    public ResponseEntity<?> createUser(@RequestBody UserDto userDto) {
+        try {
             User user = userService.createUser(userDto);
             return new ResponseEntity<>(user, HttpStatus.CREATED);
-        } catch (Exception e){
-            return  new ResponseEntity<>(e.getMessage() ,HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllUsers(){
+    public ResponseEntity<?> getAllUsers() {
         List<UserDto> userDtoList = userService.getAllUsers();
-        if(!userDtoList.isEmpty()){
+        if (!userDtoList.isEmpty()) {
             return new ResponseEntity<>(userDtoList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("No users found in database", HttpStatus.NO_CONTENT);
@@ -39,12 +39,12 @@ public class UserController {
     }
 
     @GetMapping("/csrf-token")
-    public CsrfToken getCsrfToken(HttpServletRequest request){
+    public CsrfToken getCsrfToken(HttpServletRequest request) {
         return (CsrfToken) request.getAttribute("_csrf");
     }
 
     @GetMapping("/session-id")
-    public String getSession(HttpServletRequest request){
+    public String getSession(HttpServletRequest request) {
         return request.getSession().getId();
     }
 }

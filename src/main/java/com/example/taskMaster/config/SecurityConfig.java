@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig  {
+public class SecurityConfig {
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -26,10 +26,10 @@ public class SecurityConfig  {
                 // Disable CSRF
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        // Allow access to H2 console
+                                // Allow access to H2 console
 //                        .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                        // Authenticate other requests
-                        .anyRequest().authenticated()
+                                // Authenticate other requests
+                                .anyRequest().authenticated()
                 )
 //                Form login for browser
 //                .formLogin(Customizer.withDefaults())
@@ -43,7 +43,7 @@ public class SecurityConfig  {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
         provider.setUserDetailsService(userDetailsService);

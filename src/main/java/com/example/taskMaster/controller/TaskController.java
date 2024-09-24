@@ -21,14 +21,14 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto){
+    public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
         return new ResponseEntity<>(taskService.createTask(taskDto), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllTasks(){
+    public ResponseEntity<?> getAllTasks() {
         List<TaskDto> taskDtoList = taskService.getAllTasks();
-        if(!taskDtoList.isEmpty()){
+        if (!taskDtoList.isEmpty()) {
             return new ResponseEntity<>(taskDtoList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("No Tasks created", HttpStatus.NO_CONTENT);

@@ -1,2 +1,2 @@
 INSERT INTO users (username, password)
-VALUES ('admin', 'admin123');
+VALUES ('admin', 'admin@123');

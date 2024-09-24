@@ -23,10 +23,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserDto userDto){
+    public User createUser(UserDto userDto) {
 //        Check if user already exists with same username
         User user = userRepository.findByUsername(userDto.getUsername());
-        if(user == null){
+        if (user == null) {
 //            If no user exists with given username, create new user
             user = mapToEntity(userDto);
             User savedUser = userRepository.save(user);
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUsers(){
+    public List<UserDto> getAllUsers() {
         List<User> usersList = userRepository.findAll();
         List<UserDto> userDtoList = usersList.stream().map(this::mapToDto).toList();
         return userDtoList;

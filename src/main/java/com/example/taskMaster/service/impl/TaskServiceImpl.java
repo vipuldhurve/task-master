@@ -5,7 +5,6 @@ import com.example.taskMaster.entity.Task;
 import com.example.taskMaster.repository.TaskRepository;
 import com.example.taskMaster.service.TaskService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
