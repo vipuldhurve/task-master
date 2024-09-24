@@ -1,7 +1,7 @@
 package com.example.taskMaster.service.impl;
 
+import com.example.taskMaster.entity.User;
 import com.example.taskMaster.entity.UserPrincipal;
-import com.example.taskMaster.entity.Users;
 import com.example.taskMaster.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +17,7 @@ public class UserAuthDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Users user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         if(user == null){
             System.out.println("USER NOT FOUND!");
             throw  new UsernameNotFoundException("USER NOT FOUND!");

@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface TaskService {
 
-    public TaskDto createTask(TaskDto taskDto);
+    TaskDto createTask(TaskDto taskDto);
 
-    public List<TaskDto> getAllTasks();
+    List<TaskDto> getAllTasks();
 
-    public TaskDto getTaskDetailsById(Long id);
+    TaskDto getTaskDetailsById(Long id);
 }

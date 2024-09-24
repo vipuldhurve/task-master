@@ -1,9 +1,8 @@
 package com.example.taskMaster.controller;
 
-import com.example.taskMaster.dto.TaskDto;
 import com.example.taskMaster.dto.UserDto;
-import com.example.taskMaster.entity.Users;
-import com.example.taskMaster.service.impl.UserService;
+import com.example.taskMaster.entity.User;
+import com.example.taskMaster.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody UserDto userDto){
         try{
-            Users user = userService.createUser(userDto);
+            User user = userService.createUser(userDto);
             return new ResponseEntity<>(user, HttpStatus.CREATED);
         } catch (Exception e){
             return  new ResponseEntity<>(e.getMessage() ,HttpStatus.BAD_REQUEST);
