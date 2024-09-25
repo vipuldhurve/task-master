@@ -39,16 +39,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(UserDto userDto) {
-//        Check if user already exists with same username
+        // Check if user already exists with same username
         User user = userRepository.findByUsername(userDto.getUsername());
         if (user == null) {
-//            If no user exists with given username, create new user
+            // If no user exists with given username, create new user
             user = mapToEntity(userDto);
             User savedUser = userRepository.save(user);
             System.out.println("CREATED NEW USER: " + savedUser.getUsername());
             return savedUser;
         } else {
-//            If user with same username exist, throw exception
+            // If user with same username exist, throw exception
             throw new UserAlreadyExistsException("User already exists!");
         }
     }
