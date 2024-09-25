@@ -5,6 +5,7 @@ import com.example.taskMaster.entity.Task;
 import com.example.taskMaster.repository.TaskRepository;
 import com.example.taskMaster.service.TaskService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class TaskServiceImpl implements TaskService {
     private TaskRepository taskRepository;
     private final ObjectMapper mapper;
 
+    @Autowired
     public TaskServiceImpl(TaskRepository taskRepository, ObjectMapper mapper) {
         this.taskRepository = taskRepository;
         this.mapper = mapper;

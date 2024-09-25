@@ -1,16 +1,21 @@
 package com.example.taskMaster.config;
 
+import com.example.taskMaster.config.filter.JwtFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -20,8 +25,12 @@ public class SecurityConfig {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    private JwtFilter jwtFilter;
+
+    @Autowired
+    public SecurityConfig(UserDetailsService userDetailsService, JwtFilter jwtFilter) {
         this.userDetailsService = userDetailsService;
+        this.jwtFilter = jwtFilter;
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
     }
 
@@ -31,19 +40,21 @@ public class SecurityConfig {
                 // Disable CSRF
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                                // Allow access to H2 console
-//                        .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                                // Authenticate other requests
-                                .anyRequest().authenticated()
+                        // Allow access to H2 console
+                        .requestMatchers("/users/register", "/users/login").permitAll()
+                        // Authenticate other requests
+                        .anyRequest().authenticated()
                 )
 //                Form login for browser
 //                .formLogin(Customizer.withDefaults())
 //                Form login for postman
                 .httpBasic(Customizer.withDefaults())
                 // Allow frames from the same origin
-                .headers(headers -> headers
-                        .addHeaderWriter(new CustomFrameOptionsHeaderWriter()))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .headers(headers ->
+                        headers.addHeaderWriter(new CustomFrameOptionsHeaderWriter()))
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
@@ -53,6 +64,11 @@ public class SecurityConfig {
         provider.setPasswordEncoder(bCryptPasswordEncoder);
         provider.setUserDetailsService(userDetailsService);
         return provider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 
 //    @Bean

@@ -15,13 +15,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    @Autowired
     private UserService userService;
 
-    @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody UserDto userDto) {
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UserDto userDto){
+        try{
+            return new ResponseEntity<>(userService.verify(userDto), HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<>("FAILURE! " + e.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
         try {
-            User user = userService.createUser(userDto);
+            User user = userService.registerUser(userDto);
             return new ResponseEntity<>(user, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

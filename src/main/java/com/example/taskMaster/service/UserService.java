@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface UserService {
 
-    User createUser(UserDto userDto);
+    User registerUser(UserDto userDto);
 
     List<UserDto> getAllUsers();
+
+    String verify(UserDto userDto);
 }
