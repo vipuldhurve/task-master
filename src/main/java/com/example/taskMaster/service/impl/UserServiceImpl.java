@@ -4,7 +4,6 @@ import com.example.taskMaster.dto.UserDto;
 import com.example.taskMaster.entity.User;
 import com.example.taskMaster.exception.UserAlreadyExistsException;
 import com.example.taskMaster.repository.UserRepository;
-import com.example.taskMaster.service.JwtService;
 import com.example.taskMaster.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;

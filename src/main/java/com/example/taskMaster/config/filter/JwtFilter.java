@@ -1,6 +1,6 @@
 package com.example.taskMaster.config.filter;
 
-import com.example.taskMaster.service.JwtService;
+import com.example.taskMaster.service.impl.JwtService;
 import com.example.taskMaster.service.impl.UserAuthDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

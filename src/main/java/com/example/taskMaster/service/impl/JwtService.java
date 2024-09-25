@@ -1,4 +1,4 @@
-package com.example.taskMaster.service;
+package com.example.taskMaster.service.impl;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
