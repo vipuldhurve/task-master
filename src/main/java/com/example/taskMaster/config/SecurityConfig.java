@@ -40,8 +40,9 @@ public class SecurityConfig {
                 // Disable CSRF
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        // Allow access to H2 console
-                        .requestMatchers("/users/register", "/users/login").permitAll()
+                        // Allowing access to some url
+                        .requestMatchers("/users/register", "/users/login")
+                        .permitAll()
                         // Authenticate other requests
                         .anyRequest().authenticated()
                 )
@@ -49,14 +50,25 @@ public class SecurityConfig {
 //                .formLogin(Customizer.withDefaults())
 //                Form login for postman
                 .httpBasic(Customizer.withDefaults())
-                // Allow frames from the same origin
+                // Allow frames from the same origin i.e. for h2-console if used
                 .headers(headers ->
                         headers.addHeaderWriter(new CustomFrameOptionsHeaderWriter()))
+                // Create new session id for every request i.e. no state maintained
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Add jwt filter before
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
+//    For OAuth2 client login
+//    @Bean
+//    public SecurityFilterChain securityFilterChainOAuth2(HttpSecurity http) throws Exception {
+//        return http
+//                .authorizeHttpRequests(request -> request.anyRequest().authenticated())
+//                .oauth2Login(Customizer.withDefaults())
+//                .build();
+//    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
