@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,18 +38,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerUser(UserDto userDto) {
+    public UserDto registerUser(UserDto userDto) {
         // Check if user already exists with same username
         User user = userRepository.findByUsername(userDto.getUsername());
         if (user == null) {
             // If no user exists with given username, create new user
             user = mapToEntity(userDto);
             User savedUser = userRepository.save(user);
-            System.out.println("CREATED NEW USER: " + savedUser.getUsername());
-            return savedUser;
+            UserDto savedUserDto = mapToDto(savedUser);
+            System.out.println("CREATED NEW USER: " + savedUserDto.getUsername());
+            return savedUserDto;
         } else {
             // If user with same username exist, throw exception
-            throw new UserAlreadyExistsException("User already exists!");
+            throw new UserAlreadyExistsException(user.getUsername());
         }
     }
 
@@ -73,9 +75,9 @@ public class UserServiceImpl implements UserService {
             if (userAuth.isAuthenticated())
                 return jwtService.generateToken(userDto.getUsername());
         } catch (Exception e) {
-            return "FAILURE! " + e.getMessage();
+            return "Failure! " + e.getMessage();
         }
-        return "UNKNOWN ERROR!";
+        return "Unknown Error!";
     }
 
     private User mapToEntity(UserDto userDto) {

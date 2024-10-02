@@ -2,6 +2,7 @@ package com.example.taskMaster.service.impl;
 
 import com.example.taskMaster.dto.TaskDto;
 import com.example.taskMaster.entity.Task;
+import com.example.taskMaster.exception.ResourceNotFoundException;
 import com.example.taskMaster.repository.TaskRepository;
 import com.example.taskMaster.service.TaskService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,7 +39,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDto getTaskDetailsById(Long id) {
-        return null;
+        Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task", "id", id));
+        return mapToDto(task);
     }
 
     private Task mapToEntity(TaskDto taskDto) {

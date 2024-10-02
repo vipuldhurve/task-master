@@ -23,32 +23,25 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserDto userDto){
-        try{
+    public ResponseEntity<?> login(@RequestBody UserDto userDto) {
+        try {
             return new ResponseEntity<>(userService.verify(userDto), HttpStatus.OK);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>("FAILURE! " + e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
-        try {
-            User user = userService.registerUser(userDto);
-            return new ResponseEntity<>(user, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        UserDto savedUserDto = userService.registerUser(userDto);
+        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
         List<UserDto> userDtoList = userService.getAllUsers();
-        if (!userDtoList.isEmpty()) {
-            return new ResponseEntity<>(userDtoList, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("No users found in database!", HttpStatus.OK);
-        }
+        if (!userDtoList.isEmpty()) return ResponseEntity.ok(userDtoList);
+        else return ResponseEntity.ok("No users found in database!");
     }
 
     @GetMapping("/csrf-token")

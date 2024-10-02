@@ -2,11 +2,9 @@ package com.example.taskMaster.controller;
 
 import com.example.taskMaster.dto.TaskDto;
 import com.example.taskMaster.service.TaskService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,10 +28,12 @@ public class TaskController {
     @GetMapping
     public ResponseEntity<?> getAllTasks() {
         List<TaskDto> taskDtoList = taskService.getAllTasks();
-        if (!taskDtoList.isEmpty()) {
-            return new ResponseEntity<>(taskDtoList, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("No tasks created!", HttpStatus.OK);
-        }
+        if (!taskDtoList.isEmpty()) return ResponseEntity.ok(taskDtoList);
+        else return ResponseEntity.ok("No tasks created!");
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getTaskDetailsById(@PathVariable(name = "id") Long id) {
+        return ResponseEntity.ok(taskService.getTaskDetailsById(id));
     }
 }
